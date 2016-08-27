@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
 
-            /*//RESET BACKGROUND COLORS
+            //RESET BACKGROUND COLORS
             for(int x=0;x<drawerListView.getCount();x++){
                 drawerListView.getChildAt(x).setBackgroundColor(Color.TRANSPARENT);
-            }*/
+            }
 
             switch (position){
                 case 1:

@@ -5,15 +5,24 @@ package com.coders.initiative.umoney.helpers;
  */
 public class ConfigHelper {
 
+    public static final String PACKAGE_NAME = "com.coders.initiative.umoney";
     /**
      * UNION BANK API URLS
      */
     public static final String URL_CHANNEL_ID = "UHACK_0028";
     public static final String URL_TRANSFER = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/transfer";
     public static final String URL_PAYMENT = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/payment";
-    public static final String URL_ACCOUNT = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getAccount?account_no=REPLACE_THIS_VALUE";
+    public static final String URL_ACCOUNT = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getAccount?account_no=";
     public static final String URL_LOCATOR = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getBranches";
     public static final String URL_LOANS = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/Loans/compute?principal=REPLACE_THIS_VALUE&interest=REPLACE_THIS_VALUE&noy=REPLACE_THIS_VALUE";
+
+    public static final String BORED_ID = "x-ibm-client-id";
+    public static final String BORED_CLIENT = "x-ibm-client-secret";
+
+    //TODO: OBFUSCATE THIS
+    public static final String BORED_CODER = "454e89ca-f670-40d8-982a-f96b5df845c2";
+    public static final String VOLDEMORT = "H1rG6yX7jI1nD6hR7yB6sQ2bX5fW4wU8nJ8rP4rX6oJ4oC6lM6";
+
 
     /**
      * TEST BANK ACCOUNTS
