@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/uhac_bg" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/logo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:id = "@+id/splashLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent = "true"
+                android:src="@drawable/uhack_logo_login"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/focus_thief"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+
+            <EditText
+                android:id="@+id/loginUsername"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="Username"
+                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/secondary_text"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:background="@drawable/btn_inverted_color"
+                android:drawableLeft="@drawable/ic_person"
+                />
+
+            <EditText
+                android:id="@+id/loginPassword"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="Password"
+                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/secondary_text"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:background="@drawable/btn_inverted_color"
+                android:drawableLeft="@drawable/ic_action_name"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text = "Login"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:textColor="@color/general_white"
+                android:background="@drawable/btn_default_selector"/>
+
+            <TextView
+                android:id="@+id/btnForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"/>
+
+            <Button
+                android:id="@+id/btnSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text = "Sign Up"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:textColor="@color/primary_dark"
+                android:background="@drawable/btn_inverted_color"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_inverted_color" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <!--<ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/login_nologin_label"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    />-->
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

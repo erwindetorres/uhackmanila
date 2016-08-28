@@ -3,4 +3,20 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="bill_prompt">Choose a Merchant Utility</string>
+
+    <string-array name="bill_arrays">
+        <item>ELEC</item>
+        <item>TELCO</item>
+        <item>SCHOOL</item>
+        <item>WATER</item>
+        <item>CABLE</item>
+        <item>BILL_1</item>
+        <item>BILL_2</item>
+        <item>BILL_3</item>
+        <item>BILL_4</item>
+        <item>BILL_5</item>
+    </string-array>
+
 </resources>

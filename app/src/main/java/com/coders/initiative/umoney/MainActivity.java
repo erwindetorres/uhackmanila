@@ -1,9 +1,12 @@
 package com.coders.initiative.umoney;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +26,9 @@ import com.coders.initiative.umoney.adapter.DrawerAdapter;
 import com.coders.initiative.umoney.commons.CustomFragmentManager;
 import com.coders.initiative.umoney.dummies.DummyContent;
 import com.coders.initiative.umoney.fragments.HomeFragment;
+import com.coders.initiative.umoney.fragments.LoansFragment;
+import com.coders.initiative.umoney.fragments.MerchantFragment;
+import com.coders.initiative.umoney.fragments.TransactionsFragment;
 import com.coders.initiative.umoney.helpers.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private final int DRAWER_TITLE_TRANSACTIONS = 1;
     private final int DRAWER_TITLE_UTILITIES = 2;
     private final int DRAWER_TITLE_LOANS = 3;
+    private final int DRAWER_TITLE_SETTINGS= 4;
+
 
     public MainActivity() {
         super();
@@ -71,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //actionBarTitle = drawerTitle = getTitle();
+        actionBarTitle = drawerTitle = getTitle();
         drawerListView = (ListView) findViewById(R.id.lv_drawer_items);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
@@ -131,8 +139,17 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+
+        //Strict Mode Block Guard
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         _fragmentManager = new CustomFragmentManager(this, R.id.container);
         _fragmentManager.switchTo(HomeFragment.class, null);
+
+
 
     }
 
@@ -155,10 +172,31 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     _fragmentManager.switchTo(HomeFragment.class, null);
                     setSelected(position,DRAWER_TITLE_DASHBOARD);
-                    Toast.makeText(MainActivity.getInstance(), "Yo!", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    _fragmentManager.switchTo(TransactionsFragment.class, null);
+                    setSelected(position,DRAWER_TITLE_TRANSACTIONS);
+                    break;
+                case 3:
+                    _fragmentManager.switchTo(MerchantFragment.class, null);
+                    setSelected(position,DRAWER_TITLE_UTILITIES);
+                    break;
+                case 4:
+                    _fragmentManager.switchTo(LoansFragment.class, null);
+                    setSelected(position,DRAWER_TITLE_LOANS);
+                    break;
+                case 5:
+                    //_fragmentManager.switchTo(LoansFragment.class, null);
+                    //setSelected(position,DRAWER_TITLE_LOANS);
+                    Toast.makeText(MainActivity.getInstance(), "Settings", Toast.LENGTH_SHORT).show();
+                    break;
+                case 6:
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
                 default:
-                    //DO NOTHING
+                    toggleNavigation();
                     break;
             }
 
@@ -178,11 +216,46 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 setTitle(drawerAdapter.getTitle(drawerTitle));
                 drawerListView.setItemChecked(position,true);
-                drawerListView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.primary_dark));
                 drawerLayout.closeDrawer(drawerListView);
             }
         });
 
+    }
+
+    /**
+     * Opens the navigation drawer.
+     */
+    public void openNavigation() {
+        drawerLayout.openDrawer(drawerListView);
+    }
+
+    /**
+     * Closes the navigation drawer.
+     */
+    public void closeNavigation() {
+        drawerLayout.closeDrawer(drawerListView);
+    }
+
+    /**
+     * Toggles the navigation drawer.
+     */
+    public void toggleNavigation() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            closeNavigation();
+        } else {
+            openNavigation();
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        setTitle(getString(titleId));
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        actionBarTitle = title;
+        getSupportActionBar().setTitle(actionBarTitle);
     }
 
     /**
@@ -198,5 +271,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
 
 }

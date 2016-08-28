@@ -19,11 +19,12 @@ public class DummyContent {
      */
     public static ArrayList<NavModel> getDrawerListIcons() {
         ArrayList<NavModel> list = new ArrayList<>();
-        list.add(0,new NavModel(0, "", "Dashboard", R.mipmap.ic_launcher));
+        list.add(0,new NavModel(0, "", "My Account", R.mipmap.ic_launcher));
         list.add(1,new NavModel(1, "", "My Transactions", R.mipmap.ic_launcher));
         list.add(2,new NavModel(2, "", "Utilities", R.mipmap.ic_launcher));
-        list.add(2,new NavModel(2, "", "Loans", R.mipmap.ic_launcher));
-
+        list.add(3,new NavModel(3, "", "Loans", R.mipmap.ic_launcher));
+        list.add(4,new NavModel(4, "", "Settings", R.mipmap.ic_launcher));
+        list.add(5,new NavModel(5, "", "Logout", R.mipmap.ic_launcher));
         return list;
     }
 
@@ -39,7 +40,8 @@ public class DummyContent {
             case 3:
                 return ctx.getResources().getDrawable(R.mipmap.ic_launcher);
             case 4:
-                return null;
+               // return null;
+                return ctx.getResources().getDrawable(R.mipmap.ic_launcher);
             //return ctx.getResources().getDrawable(R.drawable.ic_default_placeholder);
             case 5:
                 return ctx.getResources().getDrawable(R.mipmap.ic_launcher);

@@ -29,10 +29,19 @@ public class AccountModel {
 
     private String accountNo;
     private String currency;
-    private String accoutnName;
+    private String accountName;
     private String status;
     private String availableBalance;
     private String currentBalance;
+    private String accountType;
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
     public String getAccountNo() {
         return accountNo;
@@ -50,12 +59,12 @@ public class AccountModel {
         this.currency = currency;
     }
 
-    public String getAccoutnName() {
-        return accoutnName;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setAccoutnName(String accoutnName) {
-        this.accoutnName = accoutnName;
+    public void setAccountName(String accoutnName) {
+        this.accountName = accoutnName;
     }
 
     public String getStatus() {
