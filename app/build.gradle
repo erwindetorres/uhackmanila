@@ -31,4 +31,5 @@ dependencies {
     compile 'com.flaviofaria:kenburnsview:1.0.7'
     compile 'me.dm7.barcodescanner:zbar:1.8.2'
     compile files('src/main/libs/core-3.2.0.jar')
+    compile 'com.github.satyan:sugar:1.4'
 }

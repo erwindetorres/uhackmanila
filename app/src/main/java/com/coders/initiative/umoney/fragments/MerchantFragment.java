@@ -21,6 +21,7 @@ import com.coders.initiative.umoney.AppController;
 import com.coders.initiative.umoney.MainActivity;
 import com.coders.initiative.umoney.R;
 import com.coders.initiative.umoney.helpers.ConfigHelper;
+import com.coders.initiative.umoney.model.PaymentResponseModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,11 +142,15 @@ public class MerchantFragment extends Fragment implements View.OnClickListener{
                         String transactionID = "";
                         String confirmation = "";
                         String status = "";
+                        String channelID = "";
+                        String errorMessage = "";
 
                         JSONObject jsonObject = new JSONObject(responseData);
+                        channelID = jsonObject.getString("channel_id");
                         transactionID = jsonObject.getString("transaction_id");
                         confirmation = jsonObject.getString("confirmation_no");
                         status = jsonObject.getString("status");
+                        errorMessage = jsonObject.getString("error_message");
 
                         String message ="";
                         if(status.equals("S")){
@@ -153,6 +158,9 @@ public class MerchantFragment extends Fragment implements View.OnClickListener{
                         }else{
                             message ="TransID: "+transactionID+" Failed to process Utility Payment. Please try again later.";
                         }
+                        PaymentResponseModel prm = new PaymentResponseModel(channelID, transactionID, status, confirmation, errorMessage,message);
+                        prm.save();
+
                         final String finalMessage = message;
                         new Handler().post(new Runnable() {
                             @Override

@@ -14,7 +14,7 @@ public class ConfigHelper {
     public static final String URL_PAYMENT = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/payment";
     public static final String URL_ACCOUNT = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getAccount?account_no=";
     public static final String URL_LOCATOR = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getBranches";
-    public static final String URL_LOANS = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/Loans/compute?principal=REPLACE_THIS_VALUE&interest=REPLACE_THIS_VALUE&noy=REPLACE_THIS_VALUE";
+    public static final String URL_LOANS = "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/Loans/compute?principal=%s&interest=%s&noy=%s";
 
     public static final String BORED_ID = "x-ibm-client-id";
     public static final String BORED_CLIENT = "x-ibm-client-secret";

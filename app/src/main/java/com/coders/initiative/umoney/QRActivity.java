@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.coders.initiative.umoney.commons.SoundManager;
+import com.coders.initiative.umoney.fragments.HomeFragment;
 import com.coders.initiative.umoney.helpers.ConfigHelper;
+import com.coders.initiative.umoney.model.PaymentResponseModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,7 +88,7 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
                     AlertDialog.Builder builder =
                             new AlertDialog.Builder(QRActivity.this, R.style.AppCompatAlertDialogStyle);
                     builder.setTitle("uCredit Purchase Goods");
-                    builder.setMessage("Confirm purchase of the following package:" + packageReference);
+                    builder.setMessage("Confirm purchase of the following package:" + packageReference + " worth " + packageAmount);
                     builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -190,9 +192,11 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
                     try {
                         String responseData = response.body().string();
                         //JSONArray jsonArray = new JSONArray(responseData);
+                        String channelID = "";
                         String transactionID = "";
                         String confirmation = "";
                         String status = "";
+                        String errorMessage = "";
                         /*for(int x=0;x<jsonArray.length();x++){
                             JSONObject jsonObject = jsonArray.getJSONObject(x);
                             transactionID = jsonObject.getString("transaction_id");
@@ -200,9 +204,11 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
                             status = jsonObject.getString("status");
                         }*/
                         JSONObject jsonObject = new JSONObject(responseData);
+                        channelID = jsonObject.getString("channel_id");
                         transactionID = jsonObject.getString("transaction_id");
                         confirmation = jsonObject.getString("confirmation_no");
                         status = jsonObject.getString("status");
+                        errorMessage = jsonObject.getString("error_message");
 
                         String message ="";
                         if(status.equals("S")){
@@ -210,6 +216,9 @@ public class QRActivity extends AppCompatActivity implements ZBarScannerView.Res
                         }else{
                             message ="TransID: "+transactionID+" Failed to process Payment. Please try again later.";
                         }
+                        PaymentResponseModel prm = new PaymentResponseModel(channelID, transactionID, status, confirmation, errorMessage,message);
+                        prm.save();
+
                         final String finalMessage = message;
                         new Handler().post(new Runnable() {
                             @Override

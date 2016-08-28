@@ -2,6 +2,7 @@ package com.coders.initiative.umoney.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import com.coders.initiative.umoney.adapter.AccountsAdapter;
 import com.coders.initiative.umoney.helpers.AccountOpenListener;
 import com.coders.initiative.umoney.helpers.ConfigHelper;
 import com.coders.initiative.umoney.model.AccountModel;
+import com.coders.initiative.umoney.model.PaymentResponseModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,9 +45,12 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -126,7 +133,7 @@ public class HomeFragment extends Fragment implements AccountOpenListener{
         return list;
     }
 
-    private void initBalance(){
+    public void initBalance(){
         new AsyncTask<Void,Void, List<AccountModel>>(){
 
             List<AccountModel> accounts;
@@ -281,6 +288,7 @@ public class HomeFragment extends Fragment implements AccountOpenListener{
                         startActivity(i);
                         break;
                     case 1:
+                        initPayment();
                         //PURCHASE MATERIALS FUND TRANSFER KEY: MERC
                         break;
                     case 2:
@@ -303,7 +311,148 @@ public class HomeFragment extends Fragment implements AccountOpenListener{
         });
         dialog.show();
 
+    }
+
+    ProgressDialog progressDialog;
+    private void initPayment(){
+
+        LayoutInflater inflater = MainActivity.getInstance().getLayoutInflater();
+        View dLayout = inflater.inflate(R.layout.dialog_pay_merchant,null);
+        dialog.setContentView(dLayout);
+
+
+        Button btnSendPayment = (Button) dLayout.findViewById(R.id.dialog_send_payment);
+
+        final TextView ref = (TextView) dLayout.findViewById(R.id.tvPayMercRef);
+        final TextView amnt = (TextView) dLayout.findViewById(R.id.tvPayMercAmount);
+        final TextView pin = (TextView) dLayout.findViewById(R.id.tvPayMobilePin);
+        final TextView merc = (TextView) dLayout.findViewById(R.id.tvMercNumber);
+
+        final String targetAccount = String.valueOf(merc.getText().toString());
+        final String targetReference = String.valueOf(ref.getText().toString());
+        //String pin = String.valueOf(merc.getText().toString());
+        final String targetAmount = String.valueOf(amnt.getText().toString());
+
+
+        btnSendPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AsyncTask<Void, Void, Response>(){
+
+                    @Override
+                    protected Response doInBackground(Void... voids) {
+                        try {
+                            OkHttpClient okHttpClient = ((AppController) MainActivity.getInstance().getApplication()).getMyHttpClient();
+
+                            //TODO: CHANGE PARAM
+                            //TODO: IF UNBANKED, MOBILE NUMBER ELSE BANK ACCOUNT
+                            MediaType mediaType = MediaType.parse("application/json");
+
+                            int min = 11111111;
+                            int max = 888888888;
+
+                            Random r = new Random();
+                            int transID = r.nextInt(max - min + 1) + min;
+
+                            RequestBody body = RequestBody.create(mediaType, "{\"channel_id\":\""+ ConfigHelper.URL_CHANNEL_ID+"\",\"transaction_id\":\""+transID+"\",\"source_account\":\"000000014909\",\"source_currency\":\"php\",\"biller_id\":\""+targetAccount+"\",\"reference1\":\""+targetReference+"\",\"reference2\":\"000000000B\",\"reference3\":\"000000000C\",\"amount\":"+targetAmount+"}");
+                            Request request = new Request.Builder()
+                                    .url(ConfigHelper.URL_PAYMENT)
+                                    .post(body)
+                                    .addHeader(ConfigHelper.BORED_ID, ConfigHelper.BORED_CODER)
+                                    .addHeader(ConfigHelper.BORED_CLIENT, ConfigHelper.VOLDEMORT)
+                                    .addHeader("content-type", "application/json")
+                                    .addHeader("accept", "application/json")
+                                    .build();
+
+                            Response response = okHttpClient.newCall(request).execute();
+
+                            if(response!=null){
+                                return  response;
+                            }
+
+                            return null;
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        progressDialog = new ProgressDialog(MainActivity.getInstance());
+                        progressDialog.setMessage("Processing Payment...Please wait...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected void onPostExecute(Response response) {
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        if(response!=null){
+                            try {
+                                String responseData = response.body().string();
+
+                                String transactionID = "";
+                                String confirmation = "";
+                                String status = "";
+                                String channelID = "";
+                                String errorMessage = "";
+
+                                JSONObject jsonObject = new JSONObject(responseData);
+                                channelID = jsonObject.getString("channel_id");
+                                transactionID = jsonObject.getString("transaction_id");
+                                confirmation = jsonObject.getString("confirmation_no");
+                                status = jsonObject.getString("status");
+                                errorMessage = jsonObject.getString("error_message");
+
+                                String message ="";
+                                if(status.equals("S")){
+                                    message ="TransID: "+transactionID+" Utility Payment successfully completed. \nConfirmation No:" + confirmation;
+                                }else{
+                                    message ="TransID: "+transactionID+" Failed to process Utility Payment. Please try again later.";
+                                }
+                                PaymentResponseModel prm = new PaymentResponseModel(channelID, transactionID, status, confirmation, errorMessage,message);
+                                prm.save();
+
+                                final String finalMessage = message;
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AlertDialog.Builder builder =
+                                                new AlertDialog.Builder(MainActivity.getInstance(), R.style.AppCompatAlertDialogStyle);
+                                        builder.setTitle("Merchant Payment");
+                                        builder.setMessage(finalMessage);
+                                        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                merc.setText("");
+                                                ref.setText("");
+                                                amnt.setText("");
+                                                pin.setText("");
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        //builder.setPositiveButton(android.R.string.ok, null);
+                                        builder.show();
+                                    }
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (IOException io){
+                                io.printStackTrace();
+                            }
+                        }
+                        super.onPostExecute(response);
+                    }
+                }.execute();
+            }
+        });
 
 
     }
+
 }

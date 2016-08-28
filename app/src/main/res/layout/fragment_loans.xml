@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="LOANS"
-        android:textSize="22sp"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/pad_20dp"
+        android:paddingLeft="@dimen/pad_15dp"
+        android:paddingRight="@dimen/pad_15dp"
+        android:paddingTop="@dimen/pad_20dp" >
 
-</LinearLayout>
+
+        <EditText
+            android:id="@+id/tvPrincipalAmount"
+            style="@style/editext_graybg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/pad_5dp"
+            android:drawableLeft="@drawable/ic_username"
+            android:hint="Amount desired to loan" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/tvRate"
+            style="@style/editext_graybg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/pad_5dp"
+            android:drawableLeft="@drawable/ic_username"
+            android:hint="5.5%"
+            android:inputType="none">
+        </EditText>
+
+        <EditText
+            android:id="@+id/tvYearsToPay"
+            style="@style/editext_graybg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/pad_5dp"
+            android:drawableLeft="@drawable/ic_pwd"
+            android:hint="Years to pay"
+            >
+        </EditText>
+
+        <LinearLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/pad_5dp">
+
+            <Button
+                android:id="@+id/btnRequestQuote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/pad_10dp"
+                android:layout_weight="1"
+                android:text="Request Quote"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:textColor="@color/general_white"
+                android:background="@drawable/btn_default_selector"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
